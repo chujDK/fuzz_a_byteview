@@ -1,48 +1,27 @@
-# afl-libprotobuf-mutator
+# Fuzz a byteview
 
-Example/skeleton for using
-[libprotobuf-mutator](https://github.com/google/libprotobuf-mutator)
-together with AFL.
+byteview 是 bytectf2021 final 中出现的一道题，对于这样的题目，我觉得可以用 fuzz 的方式来获取 poc。
+具体的等我睡个觉再来写 :)
 
-## Usage
+使用 AFLplusplus（只是为了用他的 qemu 和 qasan）和 libprotobuf 生成结构化的输入进行 fuzz。
+**并没有用到任何 AFL 的变异，只是用他执行 qemu 和 qasan**
 
-0. Download and compile [AFLplusplus](https://github.com/vanhauser-thc/AFLplusplus)
-1. Put your protobuffer in `gen/out.proto`
-2. Write your own protobuffer-message-to-raw-data methods
-3. `export AFL_CUSTOM_MUTATOR_ONLY=1`
-4. `export AFL_CUSTOM_MUTATOR_LIBRARY=./mutator.so`
-
-The current implementation turns enum values into bytes.
-It was an experiment in encoding regexps as protobuffers.
-Unfortunately, PBs are not powerful enough to do that.
-
-### Full Example
-
-```bash
-export AFL_CUSTOM_MUTATOR_ONLY=1
-export AFL_CUSTOM_MUTATOR_LIBRARY=./mutator.so
-afl-fuzz -i /tmp/in -o /tmp/out -Q -- ./dumper @@
+## usage
+准备环境
+```
+./build_all_and_setup_env.sh
+source ./setup_env.sh
+```
+开始 fuzz
+```
+AFLplusplus/afl-fuzz -i input -o output -Q -- ./byteview
 ```
 
-In order to dump/verify the content of the protobuffers:
+input 中随便放个文件就行了，实际上并不需要用到，只是为了通过 AFL 的检测。
 
-```bash
-for f in /tmp/out/queue/id*src*; do echo "== $f =="; ./dumper $f; done
-```
+### reference
 
-## Install
+基于以下两个项目实现
 
-```sh
-./build.sh
-make
-```
-
-## Missing Features
-
-- AFLplusplus doesn't yet provide a custom splicing hook, so we can't mix two
-  protobuffers
-  - I have a custom version on my PC but I'm not sure it's bug-free so I won't
-    push it for the time being
-- honggfuzz has support for external mutators/postprocessors, so it should be
-  trivial to add support (maybe it'll be a little bit slower do to I/O)
-
+> [afl-libprotobuf-mutator](https://github.com/thebabush/afl-libprotobuf-mutator)
+> [protobuf_ctf_fuzz](https://github.com/Kiprey/protobuf_ctf_fuzz)
