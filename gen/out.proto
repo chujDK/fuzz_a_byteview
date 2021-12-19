@@ -1,0 +1,61 @@
+syntax = "proto2";
+
+package menuctf;
+
+message New_content
+{
+    required int32 choice_id = 1 [default = 1];
+    required int32 sum_of_datas = 2;
+    message data
+    {
+        required int32 key = 1;
+        required int32 size = 2;
+    }
+    repeated data datas = 3;
+}
+
+message Edit_message
+{
+    required int32 choice_id = 1 [default = 2];
+    required int32 key = 2;
+    required string content = 3;
+}
+
+message Show_message
+{
+    required int32 choice_id = 1 [default = 3];
+    required int32 key = 2;
+}
+
+message Old_content
+{
+    required int32 choice_id = 1 [default = 4];
+}
+
+message Content_info
+{
+    required int32 choice_id = 1 [default = 5];
+}
+
+message Exit
+{
+    required int32 choice_id = 1 [default = 6];
+}
+
+message Choices
+{
+    message Choice
+    {
+        oneof all_choices
+        {
+            New_content new_content = 1;
+            Edit_message edit_message = 2;
+            Show_message show_message = 3;
+            Old_content old_content = 4;
+            Content_info content_info = 5; 
+            Exit exit = 6;
+        }
+    }
+
+    repeated Choice choice = 1;
+}
