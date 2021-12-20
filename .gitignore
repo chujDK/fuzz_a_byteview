@@ -1,0 +1,9 @@
+build
+libprotobuf-mutator
+external
+AFLplusplus
+dumper
+gen/*.pb.*
+mutator
+src/*.o
+libmutator.so
