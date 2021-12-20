@@ -82,16 +82,20 @@ void new_content(menuctf::Choices& msg)
 {
 	std::random_device rd;
 	auto choice = new menuctf::New_content();
-	sum_of_datas = rd() % 11;
-	choice->set_sum_of_datas(sum_of_datas);
+	int sum = rd() % 11;
+	choice->set_sum_of_datas(sum);
 
-	for (int i = 0; i < sum_of_datas; i++)
+	if (sum_of_datas < 10)
 	{
-		auto data = choice->add_datas();
-		data->set_key(i);
-		int size = rd() % 0xCF + 1;
-		size_of_data[i] = size;
-		data->set_size(size);
+		sum_of_datas = sum;
+		for (int i = 0; i < sum_of_datas; i++)
+		{
+			auto data = choice->add_datas();
+			data->set_key(i);
+			int size = rd() % 0xCF + 1;
+			size_of_data[i] = size;
+			data->set_size(size);
+		}
 	}
 
 	msg.add_choice()->set_allocated_new_content(choice);
