@@ -85,7 +85,7 @@ void new_content(menuctf::Choices& msg)
 	int sum = rd() % 11;
 	choice->set_sum_of_datas(sum);
 
-	if (sum_of_datas < 10)
+	if (sum < 10)
 	{
 		sum_of_datas = sum;
 		for (int i = 0; i < sum_of_datas; i++)
@@ -114,6 +114,10 @@ void edit_message(menuctf::Choices& msg)
 	for (int i = 0; i < size_of_data[idx]; i++)
 	{
 		content_buf[i] = rd() % 127 + 1;
+		while (content_buf[i] == '\n')
+		{
+			content_buf[i] = rd() % 127 + 1;
+		}
 	}
 	content_buf[size_of_data[idx]] = 0;
 	choice->set_content(content_buf);

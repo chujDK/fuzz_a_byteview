@@ -7,3 +7,6 @@ gen/*.pb.*
 mutator
 src/*.o
 libmutator.so
+input
+output
+poc

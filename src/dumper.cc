@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <stdint.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 #include "libprotobuf-mutator/src/libfuzzer/libfuzzer_macro.h"
 
@@ -54,6 +55,27 @@ int main(int argc, char *argv[])
 			std::string new_str_str((char *)new_str, new_str_size);
 			std::cout << new_str_str << std::endl
 						<< std::endl;
+		}
+		if (!strcmp(argv[1], "-d") && argc > 2)
+		{
+			struct stat statbuf;
+			stat(argv[2], &statbuf);
+			int proto_size = statbuf.st_size;
+
+			char* proto_buf = new char [proto_size + 1];
+			
+			FILE* proto_fp = fopen(argv[2], "r");
+			if (!proto_fp) { return -1; }
+			fread(proto_buf, proto_size, 1, proto_fp);
+
+			menuctf::Choices msg;
+			std::stringstream stream;
+			// 如果加载成功
+			if (protobuf_mutator::libfuzzer::LoadProtoInput(true, (const unsigned char *) proto_buf, proto_size, &msg))
+			{
+				ProtoToDataHelper(stream, msg);
+			}
+			std::cout << stream.str();
 		}
 	}
 	else
