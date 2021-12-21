@@ -9,13 +9,14 @@
 ## usage
 准备环境
 ```
-./build_all_and_setup_env.sh
-source ./setup_env.sh
+source ./build_all_and_setup_env.sh
 ```
 开始 fuzz
 ```
 AFLplusplus/afl-fuzz -i input -o output -Q -- ./byteview
 ```
+
+fuzz 前需要设置环境变量，每次新开终端是都需要通过 `source ./setup_env.sh` 来重新设置。
 
 input 中随便放个文件就行了，实际上并不需要用到，只是为了让 AFL 能跑起来。
 
