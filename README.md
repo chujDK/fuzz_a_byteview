@@ -16,13 +16,19 @@ source ./build_all_and_setup_env.sh
 AFLplusplus/afl-fuzz -i input -o output -Q -- ./byteview
 ```
 
-fuzz 前需要设置环境变量，每次新开终端是都需要通过 `source ./setup_env.sh` 来重新设置。
+fuzz 前需要设置环境变量，每次新开终端都需要通过 `source ./setup_env.sh` 来重新设置。
 
 input 中随便放个文件就行了，实际上并不需要用到，只是为了让 AFL 能跑起来。
 
 目录下的 fuzz.sh 是 *“另一种方法”*，具体请参考博客
 
-### reference
+## bonus
+
+我在 CTF 比赛中通过此方法发现漏洞并最终解出的题目
+
+- [HFCTF 2022 vdq; 2 解](https://github.com/chujDK/fuzz_a_byteview/tree/master/solved-in-this-way/vdq)
+
+## reference
 
 基于以下两个项目实现
 
